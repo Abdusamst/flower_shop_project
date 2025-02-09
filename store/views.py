@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Item, ItemTag, Poster, Favorite
+from .models import Item, ItemTag, Favorite
 from .paginator import paginator
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
@@ -10,13 +10,11 @@ from django.contrib.auth.decorators import login_required
 def store(request):
     items = Item.objects.filter(is_available=True)
     tags = ItemTag.objects.all().order_by('name')  # Добавим сортировку
-    posters = Poster.objects.all()
     favorites = Favorite.objects.filter(user=request.user).values_list('item_id', flat=True) if request.user.is_authenticated else []
     context = {
         'page_obj': paginator(request, items, 9),
         'page_obj_2': tags,  # Обновим контекст для тегов
         'range': [*range(1, 7)],  # For random css styles
-        'posters': posters,
         'favorites': favorites,
     }
     return render(request, 'store/main_page.html', context)
@@ -26,13 +24,6 @@ def store(request):
 def create_slug(sender, instance, **kwargs):
     if not instance.slug:  # проверяем, есть ли уже slug
         instance.slug = slugify(instance.title)  # Используем title вместо name
-
-def poster(request):
-    posters = Poster.objects.all()
-    context = {
-        'posters': posters,
-    }
-    return render(request, 'store/poster.html', context)
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -263,23 +254,30 @@ import urllib.parse
 
 @login_required
 def become_seller(request):
-    tags = ItemTag.objects.all().order_by('name')
-    page_obj_2 = tags  # Если `page_obj_2` требуется в шаблоне, просто присваиваем `tags`
-
-    if request.user.is_seller:
-        messages.info(request, 'Вы уже продавец.')
+    if hasattr(request.user, 'seller'):
+        messages.info(request, 'Вы уже являетесь продавцом.')
         return redirect('store:home')
-
-    # Если пользователь не продавец, отправляем его в чат WhatsApp с менеджером
-    whatsapp_number = "+996552840777"  # Замените на номер менеджера
-    message = "Здравствуйте! Я хочу стать продавцом в вашем магазине."
-    whatsapp_url = f"https://wa.me/{whatsapp_number}?text={urllib.parse.quote(message)}"
-
-    return redirect(whatsapp_url)
-
-    return render(request, 'store/becomeseller.html', {'tags': tags, 'page_obj_2': page_obj_2})
-
-
+    
+    if request.method == 'POST':
+        phone_number = request.POST.get('phone_number')
+        store_name = request.POST.get('store_name')
+        store_type = request.POST.get('store_type')
+        store_address = request.POST.get('store_address')
+        
+        if phone_number and store_name and store_type and store_address:
+            Seller.objects.create(
+                user=request.user,
+                phone_number=phone_number,
+                store_name=store_name,
+                store_type=store_type,
+                store_address=store_address
+            )
+            messages.success(request, 'Поздравляем! Вы стали продавцом.')
+            return redirect('store:home')
+        else:
+            messages.error(request, 'Пожалуйста, заполните все поля.')
+    
+    return render(request, 'store/becomeseller.html')
 
 
 

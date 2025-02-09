@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Item, ItemTag, Poster, Seller, Review
+from .models import Item, ItemTag, Seller, Review
 
 
 
@@ -47,9 +47,7 @@ class ItemTagAdmin(admin.ModelAdmin):
     item_list.short_description = 'Список товаров'
 
 
-# Создаем класс админки для Poster
-class PosterAdmin(admin.ModelAdmin):
-    list_display = ('image',)
+
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('item', 'user', 'rating', 'text', 'created_at')
@@ -58,5 +56,4 @@ class ReviewAdmin(admin.ModelAdmin):
 # Регистрация моделей с классами админки
 admin.site.register(Item, ItemAdmin)
 admin.site.register(ItemTag, ItemTagAdmin)
-admin.site.register(Poster, PosterAdmin)
 admin.site.register(Review, ReviewAdmin)

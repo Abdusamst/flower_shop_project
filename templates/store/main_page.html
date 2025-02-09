@@ -14,34 +14,9 @@
 <body>
     <div class="main_page1">
         <div class="inner12">
-            <div id="carouselExampleIndicators" class="carousel-slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    {% for poster in posters %}
-                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                            <div class="carousel-content">
-                                <!-- Левая синяя секция -->
-                                <div class="blue-section left"></div>
-                                
-                                <!-- Центральная секция с изображением -->
-                                <div class="image-section">
-                                    <img src="{{ poster.image.url }}" class="product-image" alt="Product">
-                                </div>
-                                
-                                <!-- Правая синяя секция с текстом -->
-                                <div class="blue-section right">
-                                    <h1 class="market-title">РЫНОК<br>ДОРДОЙ</h1>
-                                    <p class="subtitle">товары в один клик</p>
-                                    <img src="{% static 'images/logo_door_copy.png' %}" class="doorlogo" alt="Door logo">
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
             <div class="jhin-seller-container">
-                <img src="{% static 'images/ddd.png' %}" class="Jhin">
                 <div class="become-seller">
-                    <a href="{% url 'store:becomeseller' %}" class="beseller"><img src="{% static 'images/besseler.png' %}" alt=""></a>
+                    <a href="{% url 'store:becomeseller' %}" class="beseller">Стать продавцом</a>
                 </div>
             </div>
             <div class="seller-dashboard">
@@ -63,8 +38,6 @@
                 </a>
                 {% endfor %}
                 </div>
-                <button class="previous">&#62;</button>
-                <button class="next">&#60;</button>
             </div>
             
         </div>  
@@ -73,7 +46,7 @@
 <!-- Продукты -->
 <section id="products">
     <div class="inner">
-        <h2>Список всех продуктов</h2>
+        <h2>Список всех цветов</h2>
         <div class="product-list">
             {% for item in page_obj %}
                 <div class="product-item" id="item-{{ item.id }}">
@@ -94,7 +67,7 @@
                         {% endif %}
                     <a href="{% url 'store:item_details' item.slug %}"><b>{{ item.title }}</b></a>
                     <p class="item-description" style="color: rgb(129, 129, 129);">{{ item.description }}</p>      
-                    <p class="price-current"><b style="color: black;">{{ item.price }}</b> сом</p>  
+                    <p class="price-current"><b style="color: black;">{{ item.price }}</b> сум</p>  
                     {% if user.is_authenticated %}
                         <a href="{% url 'cart:add_to_cart' item.slug %}" class="button_small" style="margin-top:10px; color: white;">
                             <i class="fa-solid fa-cart-shopping"></i></a>
@@ -114,34 +87,6 @@
         {% block js %}
     
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const carousel = document.querySelector('.tags_mainpage');
-    const nextButton = document.querySelector('.next');
-    const prevButton = document.querySelector('.previous');
-    const carouselItems = document.querySelectorAll('.tags_mainpage a');
-
-    const itemWidth = carouselItems[0].offsetWidth + 20;
-    const totalItems = carouselItems.length;
-    const visibleItems = 4;
-    const maxScroll = (totalItems - visibleItems) * itemWidth;
-
-    let currentScroll = 0;
-
-    nextButton.addEventListener('click', () => {
-        if (currentScroll < maxScroll) {
-            currentScroll += itemWidth;
-            carousel.scrollLeft = currentScroll;
-        }
-    });
-
-    prevButton.addEventListener('click', () => {
-        if (currentScroll > 0) {
-            currentScroll -= itemWidth;
-            carousel.scrollLeft = currentScroll;
-        }
-    });
-});
-
 function toggleFavorite(itemId) {
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;       
     fetch(`/toggle_favorite/${itemId}/`, {

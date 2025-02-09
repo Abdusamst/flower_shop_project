@@ -74,21 +74,6 @@ def create_order_whatsapp(request):
             # Очищаем корзину
             cart.clear()
 
-            # Формируем сообщение для WhatsApp
-            message = f"Я хочу оформить заказ:\n"
-            for cart_item in cart.items.all():
-                message += f"{cart_item.item.title} x{cart_item.quantity} — {cart_item.total_price}\n"
-            message += f"Общая стоимость: {cart.total_price}\n"
-            message += f"Имя: {request.user.first_name} {request.user.last_name}\n"
-            message += f"Телефон: {request.user.phone_number}\n"
-
-            # Номер телефона продавца для WhatsApp (замените на нужный номер)
-            seller_phone = '+996552840777'  # Пример номера
-            whatsapp_url = f"https://wa.me/{seller_phone}?text={message}"
-
-            # Перенаправляем на WhatsApp
-            return redirect(whatsapp_url)
-
     else:
         form = OrderCreateForm()
 

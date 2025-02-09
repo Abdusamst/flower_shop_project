@@ -60,22 +60,7 @@ class TaggedItem(GenericTaggedItemBase):
         related_name="items",
         verbose_name='Категория',
     )
-    
 
-
-class Poster(models.Model):
-    image = models.ImageField(
-        upload_to='posters/',
-        verbose_name='Изображение',
-        blank=True
-    )
-
-    def __str__(self):
-        return f"Poster {self.id}"
-
-    class Meta:
-        verbose_name = "Постер"
-        verbose_name_plural = "Постеры"
 
 class Item(models.Model):
     title = models.CharField(max_length=200, verbose_name='Название',)
@@ -86,7 +71,7 @@ class Item(models.Model):
     )
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления',)
     price = models.DecimalField(
-        max_digits=8,
+        max_digits=20,
         decimal_places=2,
         verbose_name='Новая цена',
     )

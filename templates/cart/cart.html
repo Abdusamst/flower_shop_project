@@ -34,7 +34,7 @@
           <td class="cart-item-total-price" data-cart-item-id="{{ cart_item.id }}">{{ cart_item.total_price }}</td>
           <td style="border: none; background-color: #ffffff;" align="center">
             <a href="{% url 'cart:delete_cart_item' cart_item.item.slug %}">
-              <img src="{% static "images/garbage.svg" %}" width="25" height="25">
+              <img src="{% static "images/garbage.png" %}" width="25" height="25">
             </a>
           </td>
         </tr>
@@ -53,7 +53,7 @@
   <a href="{% url 'store:home' %}" style="float: left;" class="button_continue">Продолжать покупки</a>
   <form method="POST" action="{% url 'checkout:create_order_whatsapp' %}">
     {% csrf_token %}
-    <button type="submit" class="button_whatsapp">Оформить заказ через WhatsApp</button>
+    <button type="submit" class="button_whatsapp">Оформить заказ</button>
   </form>
 </div>
 {% else %}

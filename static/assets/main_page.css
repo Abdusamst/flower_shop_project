@@ -49,10 +49,6 @@
     z-index: -1;
 }
 
-.tags_mainpage {
-    width: 1700px;
-}
-
 
 .product-item {
     background: white;
@@ -123,7 +119,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
     border-radius: 50%; /* делаем изображение круглым */
     border: 2px solid #000; /* добавляем рамку для кружков */
 }
