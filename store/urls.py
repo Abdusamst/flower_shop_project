@@ -1,12 +1,13 @@
 from django.urls import path
 from .views import item_details, store, tag_details, tag_list, add_to_favorites, remove_from_favorites, favorite_list, toggle_favorite, search, become_seller, add_item, add_review, all_reviews
 from . import views
+from django.urls import re_path
 app_name = 'store'
 
 urlpatterns = [
     path('', store, name='home'),
     path('categories/', tag_list, name='tag_list'),
-    path('category-details/<slug:slug>/', tag_details, name='tag_details'),
+    re_path(r'^category-details/(?P<slug>[\w-]+)/$', tag_details, name='tag_details'),
     path('search/', search, name='search'),  # Маршрут для поиска
     path('favorites/', favorite_list, name='favorite_list'),  # Маршрут для списка избранного
     path('add_to_favorites/<int:item_id>/', add_to_favorites, name='add_to_favorites'),
